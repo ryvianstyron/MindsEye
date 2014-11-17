@@ -26,7 +26,14 @@ public class PlayerMovement : MonoBehaviour
     public bool IsGrounded = true;
 
     private bool WithinSynapseRangeForDamageOrRepair = false;
+    private bool WithinDopamineSacRangeForReleaseOrBurst = false;
+    private bool WithinRechargeStationRangeForReplenishing = false;
+    
     private SynapseBehavior SynapseBehavior;
+    private DopamineSacBehavior DopmaineSacBehavior;
+    private RechargeStationBehavior RechargeStationBehavior;
+
+    private EnergyHealthMeter EnergyHealthMeter;
 
     public int GetPlayerDirection()
     {
@@ -36,10 +43,10 @@ public class PlayerMovement : MonoBehaviour
     {
         JumpSpeed = 60;
         HUD = GameObject.Find("Camera").GetComponent<HUDManager>();
+        EnergyHealthMeter = (EnergyHealthMeter)GameObject.Find("PlayerEnergy").GetComponent<EnergyHealthMeter>();
         PlayerRigidBody = transform.rigidbody.GetComponent<Rigidbody>();
         MovementSpeedMaxTest = PlayerRigidBody.transform.forward * MovementSpeed;
         Player = gameObject.GetComponent<Player>();
-        Debug.Log("Player name in PlayerMovement:" + gameObject.name);
     }
     void FixedUpdate()
     {
@@ -61,15 +68,35 @@ public class PlayerMovement : MonoBehaviour
             Debug.DrawRay(transform.position, Vector3.right, Color.red, 1);
             Run(RIGHT);
         }
-        else if(Input.GetKeyDown("space") && WithinSynapseRangeForDamageOrRepair)
+        else if (Input.GetKey("space") && WithinSynapseRangeForDamageOrRepair)
         {
             if (HUD.IsCurePlayerSelected())
             {
                 GetSynapseBehavior().Repair(1);
+                EnergyHealthMeter.UseEnergy(1);
+            }
+            else if (HUD.IsDiseasePlayerSelected())
+            {
+                GetSynapseBehavior().Damage(1);
+                EnergyHealthMeter.UseEnergy(1);
+            }
+        }
+        else if(Input.GetKeyDown("return") && WithinDopamineSacRangeForReleaseOrBurst)
+        {
+            if(HUD.IsCurePlayerSelected())
+            {
+                GetDopamineSacBehavior().Release();
             }
             else if(HUD.IsDiseasePlayerSelected())
             {
-                GetSynapseBehavior().Damage(1);
+                GetDopamineSacBehavior().Burst();
+            }
+        }
+        else if(Input.GetKeyDown("z") && WithinRechargeStationRangeForReplenishing)
+        {
+            if (HUD.IsCurePlayerSelected() || HUD.IsDiseasePlayerSelected())
+            {
+                GetRechargeStationBehavior().Recharge();
             }
         }
     }
@@ -94,14 +121,29 @@ public class PlayerMovement : MonoBehaviour
             IsFalling = true;
         }*/
     }
+    public void SetRechargeStationBehavior(RechargeStationBehavior RechargeStation)
+    {
+        RechargeStationBehavior = RechargeStation;
+    }
+    public RechargeStationBehavior GetRechargeStationBehavior()
+    {
+        return RechargeStationBehavior;
+    }
     public void SetSynapseBehavior(SynapseBehavior Synapse)
     {
-        Debug.Log("Set Synapse Behavior");
         SynapseBehavior = Synapse;
     }
     public SynapseBehavior GetSynapseBehavior()
     {
         return SynapseBehavior;
+    }
+    public void SetDopamineSacBehavior(DopamineSacBehavior Dopamine)
+    {
+        DopmaineSacBehavior = Dopamine;
+    }
+    public DopamineSacBehavior GetDopamineSacBehavior()
+    {
+        return DopmaineSacBehavior;
     }
     void OnCollisionEnter(Collision Collision)
     {
@@ -110,7 +152,6 @@ public class PlayerMovement : MonoBehaviour
 
         if (Collision.gameObject.name.Contains("LevelGround")) 
         {
-            //Debug.Log("Collision level Ground");
             IsFalling = false;
             IsGrounded = true;
             IsJumping = false;
@@ -122,17 +163,15 @@ public class PlayerMovement : MonoBehaviour
         }
         else if(Collision.gameObject.name.Contains("Synapse"))
         {
-            // Determine player type
             SynapseBehavior SynapseBehavior = Collision.gameObject.GetComponent<SynapseBehavior>();
-            if(HUD.IsCurePlayerSelected() && SynapseBehavior.SynapseType == 0 || HUD.IsDiseasePlayerSelected() && SynapseBehavior.SynapseType == 1)
+            if (HUD.IsCurePlayerSelected() && SynapseBehavior.GetSynapseType() == 0 || HUD.IsDiseasePlayerSelected() && SynapseBehavior.GetSynapseType() == 1)
             {
-                Debug.Log(" On Collision Synapse Condition : Player Should die: ");
-                Player.SetLives(0);
-                Player.SetMana(0);
+                if(Player.GetLives() > 0)
+                {
+                    Player.SetLives(Player.GetLives() - 1);
+                }
                 HUD.UpdateLives();
-                HUD.UpdateMana();
             }
-       
         }
     }
     protected void Jump()
@@ -165,12 +204,10 @@ public class PlayerMovement : MonoBehaviour
             case LEFT:
                 if (Physics.Raycast(transform.position, Vector3.left, out Hit, 5.0F))
                 {
-                    //Distance = Hit.distance;
                     if (Hit.collider.name.Contains("Synapse"))
                     {
                         if (Hit.distance <= 4.0f)
                         {
-                            Debug.Log("Within Range @" + Hit.distance);
                             WithinSynapseRangeForDamageOrRepair = true;
                             SetSynapseBehavior((SynapseBehavior)Hit.collider.gameObject.GetComponent<SynapseBehavior>());
                         }
@@ -178,10 +215,38 @@ public class PlayerMovement : MonoBehaviour
                         {
                             WithinSynapseRangeForDamageOrRepair = false;
                         }
-
+                    }
+                    else if(Hit.collider.name.Contains("DopamineSac"))
+                    {
+                        if (Hit.distance <= 4.0f)
+                        {
+                            WithinDopamineSacRangeForReleaseOrBurst = true;
+                            SetDopamineSacBehavior((DopamineSacBehavior)Hit.collider.gameObject.GetComponent<DopamineSacBehavior>());
+                        }
+                        else if (Hit.distance > 4.0f)
+                        {
+                            WithinDopamineSacRangeForReleaseOrBurst = false;
+                        }
+                    }
+                    else if (Hit.collider.name.Contains("RechargeStation"))
+                    {
+                        if (Hit.distance <= 4.0f)
+                        {
+                            WithinRechargeStationRangeForReplenishing = true;
+                            SetRechargeStationBehavior((RechargeStationBehavior)Hit.collider.gameObject.GetComponent<RechargeStationBehavior>());
+                        }
+                        else if (Hit.distance > 4.0f)
+                        {
+                            WithinRechargeStationRangeForReplenishing = false;
+                        }
                     }
                 }
-                else WithinSynapseRangeForDamageOrRepair = false;
+                else
+                {
+                    WithinSynapseRangeForDamageOrRepair = false;
+                    WithinDopamineSacRangeForReleaseOrBurst = false;
+                    WithinRechargeStationRangeForReplenishing = false;
+                }
                 break;
             case RIGHT:
                 if (Physics.Raycast(transform.position, Vector3.right, out Hit, 5.0F))
@@ -190,7 +255,7 @@ public class PlayerMovement : MonoBehaviour
                     {
                         if (Hit.distance <= 4.0f)
                         {
-                            Debug.Log("Within Range @" + Hit.distance);
+                            //Debug.Log("Within Range @" + Hit.distance);
                             WithinSynapseRangeForDamageOrRepair = true;
                             SetSynapseBehavior((SynapseBehavior)Hit.collider.gameObject.GetComponent<SynapseBehavior>());
                         }
@@ -199,8 +264,37 @@ public class PlayerMovement : MonoBehaviour
                             WithinSynapseRangeForDamageOrRepair = false;
                         }
                     }
+                    else if (Hit.collider.name.Contains("DopamineSac"))
+                    {
+                        if (Hit.distance <= 4.0f)
+                        {
+                            WithinDopamineSacRangeForReleaseOrBurst = true;
+                            SetDopamineSacBehavior((DopamineSacBehavior)Hit.collider.gameObject.GetComponent<DopamineSacBehavior>());
+                        }
+                        else if (Hit.distance > 4.0f)
+                        {
+                            WithinDopamineSacRangeForReleaseOrBurst = false;
+                        }
+                    }
+                    else if (Hit.collider.name.Contains("RechargeStation"))
+                    {
+                        if (Hit.distance <= 4.0f)
+                        {
+                            WithinRechargeStationRangeForReplenishing = true;
+                            SetRechargeStationBehavior((RechargeStationBehavior)Hit.collider.gameObject.GetComponent<RechargeStationBehavior>());
+                        }
+                        else if (Hit.distance > 4.0f)
+                        {
+                            WithinRechargeStationRangeForReplenishing = false;
+                        }
+                    }
                 }
-                else WithinSynapseRangeForDamageOrRepair = false;
+                else
+                {
+                    WithinDopamineSacRangeForReleaseOrBurst = false;
+                    WithinSynapseRangeForDamageOrRepair = false;
+                    WithinRechargeStationRangeForReplenishing = false;
+                }
                 break;
         }
     }
