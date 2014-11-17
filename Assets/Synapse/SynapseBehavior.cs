@@ -31,20 +31,54 @@ public class SynapseBehavior : MonoBehaviour
                 break;
         }
         HealthMultipler = (SynapseHealth / 100);
-      
         SynapseHealthBack.transform.localScale = new Vector3(SynapseHealthBack.transform.localScale.x * HealthMultipler,
                                                                 SynapseHealthBack.transform.localScale.y,
                                                                 SynapseHealthBack.transform.localScale.z);
+        Debug.Log("SynapseHealth: " + SynapseHealth);
 	}
-	void Update () 
+    void Update()
     {
-	}
-    public void Repair(int RepairBy)
-    {
-        SynapseHealth += RepairBy;
+        switch (SynapseType)
+        {
+            case UNHEALTHY:
+                ShouldDamageCurePlayer = true;
+                ShouldDamageDiseasePlayer = false;
+                break;
+            case HEALTHY:
+                ShouldDamageDiseasePlayer = true;
+                ShouldDamageCurePlayer = false;
+                break;
+        }
     }
-    public void Damage(int DamageBy)
+    public void Repair(float RepairBy)
     {
-        SynapseHealth -= DamageBy;
+        if(!(SynapseHealth + RepairBy > 100))
+        {
+            SynapseHealth += RepairBy;
+            HealthMultipler = (SynapseHealth / 100);
+            SynapseHealthBack.transform.localScale = new Vector3(SynapseHealthFront.transform.localScale.x * HealthMultipler,
+                                                                 SynapseHealthBack.transform.localScale.y,
+                                                                 SynapseHealthBack.transform.localScale.z);
+            if(SynapseHealth == 100)
+            {
+                SynapseType = HEALTHY;
+            }
+            
+        }
+    }
+    public void Damage(float DamageBy)
+    {
+        if(!(SynapseHealth - DamageBy < 0))
+        {
+            SynapseHealth -= DamageBy;
+            HealthMultipler = (SynapseHealth / 100);
+            SynapseHealthBack.transform.localScale = new Vector3(SynapseHealthFront.transform.localScale.x * HealthMultipler,
+                                                                 SynapseHealthBack.transform.localScale.y,
+                                                                 SynapseHealthBack.transform.localScale.z);
+            if (SynapseHealth < 100)
+            {
+                SynapseType = UNHEALTHY;
+            }
+        }
     }
 }

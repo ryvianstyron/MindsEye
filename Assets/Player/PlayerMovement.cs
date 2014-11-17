@@ -15,7 +15,7 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 MovementSpeedMaxTest;
     public int MovementSpeed; // 250
 
-    public float JumpSpeed = 20;
+    public float JumpSpeed;
     public GameObject PlayerGameObject;
     public GameObject WeaponMace;
 
@@ -25,8 +25,8 @@ public class PlayerMovement : MonoBehaviour
     public bool IsFalling = false;
     public bool IsGrounded = true;
 
-    private bool IsEarthPickedUp = false;
-    private bool IsFirePickedUp = false;
+    private bool WithinSynapseRangeForDamageOrRepair = false;
+    private SynapseBehavior SynapseBehavior;
 
     public int GetPlayerDirection()
     {
@@ -34,6 +34,7 @@ public class PlayerMovement : MonoBehaviour
     }
     void Start()
     {
+        JumpSpeed = 60;
         HUD = GameObject.Find("Camera").GetComponent<HUDManager>();
         PlayerRigidBody = transform.rigidbody.GetComponent<Rigidbody>();
         MovementSpeedMaxTest = PlayerRigidBody.transform.forward * MovementSpeed;
@@ -60,6 +61,17 @@ public class PlayerMovement : MonoBehaviour
             Debug.DrawRay(transform.position, Vector3.right, Color.red, 1);
             Run(RIGHT);
         }
+        else if(Input.GetKeyDown("space") && WithinSynapseRangeForDamageOrRepair)
+        {
+            if (HUD.IsCurePlayerSelected())
+            {
+                GetSynapseBehavior().Repair(1);
+            }
+            else if(HUD.IsDiseasePlayerSelected())
+            {
+                GetSynapseBehavior().Damage(1);
+            }
+        }
     }
     void OnCollisionExit(Collision Collision)
     {
@@ -81,6 +93,15 @@ public class PlayerMovement : MonoBehaviour
             //Debug.Log("Exit Earth Block & !Jumping");
             IsFalling = true;
         }*/
+    }
+    public void SetSynapseBehavior(SynapseBehavior Synapse)
+    {
+        Debug.Log("Set Synapse Behavior");
+        SynapseBehavior = Synapse;
+    }
+    public SynapseBehavior GetSynapseBehavior()
+    {
+        return SynapseBehavior;
     }
     void OnCollisionEnter(Collision Collision)
     {
@@ -133,13 +154,54 @@ public class PlayerMovement : MonoBehaviour
         {
             PlayerRigidBody.AddForce(Vector3.right * MovementSpeed);
             LastPlayerDirection = RIGHT;
-            RaycastHit hit;
-            if (Physics.Raycast(transform.position, Vector3.right, out hit, 100.0F))
-            {
-                Debug.Log("Ray Hit: " + hit.collider.name);
-                float Distance = hit.distance;
-                Debug.Log("Distance: " + Distance);
-            }
+        }
+        ShootRayCast(Direction);
+    }
+    public void ShootRayCast(int Direction)
+    {
+        RaycastHit Hit;
+        switch(Direction)
+        {
+            case LEFT:
+                if (Physics.Raycast(transform.position, Vector3.left, out Hit, 5.0F))
+                {
+                    //Distance = Hit.distance;
+                    if (Hit.collider.name.Contains("Synapse"))
+                    {
+                        if (Hit.distance <= 4.0f)
+                        {
+                            Debug.Log("Within Range @" + Hit.distance);
+                            WithinSynapseRangeForDamageOrRepair = true;
+                            SetSynapseBehavior((SynapseBehavior)Hit.collider.gameObject.GetComponent<SynapseBehavior>());
+                        }
+                        else if (Hit.distance > 4.0f)
+                        {
+                            WithinSynapseRangeForDamageOrRepair = false;
+                        }
+
+                    }
+                }
+                else WithinSynapseRangeForDamageOrRepair = false;
+                break;
+            case RIGHT:
+                if (Physics.Raycast(transform.position, Vector3.right, out Hit, 5.0F))
+                {
+                    if (Hit.collider.name.Contains("Synapse"))
+                    {
+                        if (Hit.distance <= 4.0f)
+                        {
+                            Debug.Log("Within Range @" + Hit.distance);
+                            WithinSynapseRangeForDamageOrRepair = true;
+                            SetSynapseBehavior((SynapseBehavior)Hit.collider.gameObject.GetComponent<SynapseBehavior>());
+                        }
+                        else if (Hit.distance > 4.0f)
+                        {
+                            WithinSynapseRangeForDamageOrRepair = false;
+                        }
+                    }
+                }
+                else WithinSynapseRangeForDamageOrRepair = false;
+                break;
         }
     }
 }

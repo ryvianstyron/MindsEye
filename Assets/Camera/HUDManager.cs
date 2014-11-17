@@ -23,8 +23,11 @@ public class HUDManager : MonoBehaviour
 
     private CameraFollower CameraFollowScript;
     private PlayerMovement MovementScript;
+
+    private PlayerSpawner PlayerSpawner;
     void Start()
     {
+        PlayerSpawner = Camera.GetComponent<PlayerSpawner>();
         CameraFollowScript = Camera.GetComponent<CameraFollower>();
     }
     public void SetupBrainEnergyGauge()
@@ -71,14 +74,18 @@ public class HUDManager : MonoBehaviour
     }
     public void PlayerDiseaseClicked()
     {
+        Debug.Log("PlayerDiseaseClicked");
         if (!CurePlayerSelected && !DiseasePlayerSelected)
         {
             DiseasePlayerSelected = true;
 
             PlayCure.gameObject.SetActive(false);
             PlayDisease.gameObject.SetActive(false);
-            
-            GameObject PlayerDisease = (GameObject)Instantiate(Disease, new Vector3(-80.0f, 0.5f, 0f), Quaternion.identity);
+
+            Vector3 PositionToSpawn = PlayerSpawner.GetRandomSpawnPoint();
+            PositionToSpawn.y += 3;
+            //GameObject PlayerDisease = (GameObject)Instantiate(Disease, new Vector3(-5.0f, 0.5f, 0f), Quaternion.identity);
+            GameObject PlayerDisease = (GameObject)Instantiate(Disease, PositionToSpawn, Quaternion.identity);
 
             Player = (Player)PlayerDisease.GetComponent(typeof(Player));
             DoGeneralSetup(PlayerDisease);
@@ -88,14 +95,18 @@ public class HUDManager : MonoBehaviour
     }
     public void PlayerCureClicked()
     {
+        Debug.Log("PlayerCureClicked");
         if (!DiseasePlayerSelected && !CurePlayerSelected)
         {
             CurePlayerSelected = true;
 
             PlayDisease.gameObject.SetActive(false);
             PlayCure.gameObject.SetActive(false);
-            
-            GameObject PlayerCure = (GameObject)Instantiate(Cure, new Vector3(-80.0f, 0.5f, 0f), Quaternion.identity);
+
+            Vector3 PositionToSpawn = PlayerSpawner.GetRandomSpawnPoint();
+            PositionToSpawn.y += 3;
+            //GameObject PlayerCure = (GameObject)Instantiate(Cure, new Vector3(-5.0f, 0.5f, 0f), Quaternion.identity);
+            GameObject PlayerCure = (GameObject)Instantiate(Cure, PositionToSpawn, Quaternion.identity);
 
             Player = (Player)PlayerCure.GetComponent(typeof(Player));
             DoGeneralSetup(PlayerCure);
