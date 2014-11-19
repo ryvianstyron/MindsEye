@@ -15,7 +15,7 @@ public class TimerScript : MonoBehaviour
 
     void Start () 
     {
-        Timer = 180.0f; // 3 minutes x 60 seconds
+        Timer = 300.0f; // 3 minutes x 60 seconds
         totalseconds = Timer % 3600; 
         minutes = (int)totalseconds / 60;
         seconds = (int)totalseconds % 60;
@@ -54,6 +54,7 @@ public class TimerScript : MonoBehaviour
             {
                 Debug.Log("GameOver");
                 GameOver = true;
+                Application.LoadLevel("GameOverMenu");
             }
         }
 	}
