@@ -64,7 +64,6 @@ public class SynapseBehavior : MonoBehaviour
     }
     public void Repair(float RepairBy)
     {
-        //Debug.Log("CurrentSynapseHealth:" + SynapseHealth + " & WillRepairBy: " + RepairBy);
         if(!(SynapseHealth + RepairBy > 100))
         {
             SynapseHealth += RepairBy;
@@ -81,7 +80,6 @@ public class SynapseBehavior : MonoBehaviour
     }
     public void Damage(float DamageBy)
     {
-        //Debug.Log("CurrentSynapseHealth:" + SynapseHealth + " & WillDamageBy: " + DamageBy);
         if(!(SynapseHealth - DamageBy < 0))
         {
             SynapseHealth -= DamageBy;

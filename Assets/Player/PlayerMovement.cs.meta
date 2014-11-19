@@ -2,7 +2,10 @@ fileFormatVersion: 2
 guid: efc7e5e066dfd7d4eab1ee1a718e828c
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - EnergyBullet: {fileID: 100000, guid: 75398f34d6f25034288983c2fdecc0fc, type: 2}
+  - PlayerGameObject: {instanceID: 0}
+  - WeaponMace: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

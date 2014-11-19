@@ -39,14 +39,15 @@
 	<Reference Include="System.Core" />
 	<Reference Include="System.Xml.Linq" />
 	<Reference Include="UnityEngine">
-	  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/Managed/UnityEngine.dll</HintPath>
+	  <HintPath>C:/Program Files (x86)/Unity4.6B/Editor/Data/Managed/UnityEngine.dll</HintPath>
 	</Reference>
 	<Reference Include="UnityEditor">
-	  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/Managed/UnityEditor.dll</HintPath>
+	  <HintPath>C:/Program Files (x86)/Unity4.6B/Editor/Data/Managed/UnityEditor.dll</HintPath>
 	</Reference>
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\BrainHealthMeter.cs" />
+     <Compile Include="Assets\BulletBehavior.cs" />
      <Compile Include="Assets\Camera\CameraFollower.cs" />
      <Compile Include="Assets\Camera\HUDManager.cs" />
      <Compile Include="Assets\DopamineSacBehavior.cs" />
@@ -55,7 +56,6 @@
      <Compile Include="Assets\NeuronBehavior.cs" />
      <Compile Include="Assets\PickUps\PickUp.cs" />
      <Compile Include="Assets\Player\Player.cs" />
-     <Compile Include="Assets\Player\PlayerActions.cs" />
      <Compile Include="Assets\Player\PlayerMovement.cs" />
      <Compile Include="Assets\Player\PlayerPowerActions.cs" />
      <Compile Include="Assets\Player\Weapon\Weapon.cs" />
@@ -71,11 +71,12 @@
      <Compile Include="Assets\Switch\SwitchBehavior.cs" />
      <Compile Include="Assets\Synapse\SynapseBehavior.cs" />
      <Compile Include="Assets\SynapsesHolder.cs" />
+     <Compile Include="Assets\TimerScript.cs" />
  <Reference Include="Assembly-UnityScript-firstpass">
  <HintPath>C:/Users/DarkRaveDev/Documents/GitHUB/MindsEye/Library/ScriptAssemblies/Assembly-UnityScript-firstpass.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.UI">
- <HintPath>C:/Program Files (x86)/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/4.6.0/UnityEngine.UI.dll</HintPath>
+ <HintPath>C:/Program Files (x86)/Unity4.6B/Editor/Data/UnityExtensions/Unity/GUISystem/4.6.0/UnityEngine.UI.dll</HintPath>
  </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

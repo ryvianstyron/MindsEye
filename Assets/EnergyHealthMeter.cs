@@ -5,8 +5,8 @@ using UnityEngine.UI;
 public class EnergyHealthMeter : MonoBehaviour 
 {
     public Button EnergyButton;
-    private float EnergyHealth = 100.0f;
-    private const float MAX_ENERGY_HEALTH = 100.0f;
+    private float EnergyHealth = 500.0f;
+    private const float MAX_ENERGY_HEALTH = 500.0f;
 	void Start () 
     {
 	
@@ -17,17 +17,20 @@ public class EnergyHealthMeter : MonoBehaviour
 	}
     public void UseEnergy(float EnergyUsed)
     {
-        Debug.Log("UseEnergy<>EnergyHealth: " + EnergyHealth + ",EnergyUsed: " + EnergyUsed);
-        if((EnergyHealth - EnergyUsed > 0))
+        if(EnergyHealth != 0)
         {
             EnergyHealth -= EnergyUsed;
         }
     }
     public void ReplenishEnergy(float EnergyReplinished)
     {
-        if(!(EnergyHealth + EnergyReplinished > 100))
+        if (EnergyHealth != MAX_ENERGY_HEALTH)
         {
             EnergyHealth += EnergyReplinished;
         }
+    }
+    public float GetEnergyHealth()
+    {
+        return EnergyHealth;
     }
 }

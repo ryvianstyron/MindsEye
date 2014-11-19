@@ -1,12 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class RechargeStationBehavior : MonoBehaviour {
+public class RechargeStationBehavior : MonoBehaviour 
+{
+    EnergyHealthMeter EnergyHealthMeter;
 
 	// Use this for initialization
 	void Start () 
     {
-	
+        EnergyHealthMeter = GameObject.Find("PlayerEnergy").GetComponent<EnergyHealthMeter>();
 	}
 	
 	// Update is called once per frame
@@ -16,6 +18,6 @@ public class RechargeStationBehavior : MonoBehaviour {
 	}
     public void Recharge()
     {
-        Debug.Log("Recharge Being called");
+       EnergyHealthMeter.ReplenishEnergy(1.0f);
     }
 }

@@ -3,6 +3,8 @@ using System.Collections;
 
 public class PlayerMovement : MonoBehaviour
 {
+    public GameObject EnergyBullet;
+
     private int LastPlayerDirection;
     private Player Player;
     private Rigidbody PlayerRigidBody;
@@ -72,13 +74,19 @@ public class PlayerMovement : MonoBehaviour
         {
             if (HUD.IsCurePlayerSelected())
             {
-                GetSynapseBehavior().Repair(1);
-                EnergyHealthMeter.UseEnergy(1);
+                if (GetSynapseBehavior().GetSynapseHealth() != 100)
+                {
+                    GetSynapseBehavior().Repair(1);
+                    EnergyHealthMeter.UseEnergy(1);
+                }
             }
             else if (HUD.IsDiseasePlayerSelected())
             {
-                GetSynapseBehavior().Damage(1);
-                EnergyHealthMeter.UseEnergy(1);
+                if (GetSynapseBehavior().GetSynapseHealth() != 0)
+                {
+                    GetSynapseBehavior().Damage(1);
+                    EnergyHealthMeter.UseEnergy(1);
+                }
             }
         }
         else if(Input.GetKeyDown("return") && WithinDopamineSacRangeForReleaseOrBurst)
@@ -92,11 +100,37 @@ public class PlayerMovement : MonoBehaviour
                 GetDopamineSacBehavior().Burst();
             }
         }
-        else if(Input.GetKeyDown("z") && WithinRechargeStationRangeForReplenishing)
+        else if(Input.GetKey("z") && WithinRechargeStationRangeForReplenishing)
         {
             if (HUD.IsCurePlayerSelected() || HUD.IsDiseasePlayerSelected())
             {
                 GetRechargeStationBehavior().Recharge();
+            }
+        }
+        if(Input.GetKeyDown("x"))
+        {
+            GameObject InstantiateBullet;
+            Vector3 BulletSpawn;
+            if(LastPlayerDirection == RIGHT)
+            {
+                if (EnergyHealthMeter.GetEnergyHealth() > 0.0f)
+                {
+                    BulletSpawn = new Vector3(transform.position.x + 1, transform.position.y + 0.5f, transform.position.z);
+                    InstantiateBullet = (GameObject)Instantiate(EnergyBullet, BulletSpawn, Quaternion.identity);
+                    InstantiateBullet.rigidbody.AddForce(EnergyBullet.transform.right * 1500);
+                    EnergyHealthMeter.UseEnergy(10);
+                }
+
+            }
+            else if(LastPlayerDirection == LEFT)
+            {
+                if(EnergyHealthMeter.GetEnergyHealth() > 0.0f)
+                {
+                    BulletSpawn = new Vector3(transform.position.x - 1, transform.position.y + 0.5f, transform.position.z);
+                    InstantiateBullet = (GameObject)Instantiate(EnergyBullet, BulletSpawn, Quaternion.identity);
+                    InstantiateBullet.rigidbody.AddForce(-EnergyBullet.transform.right * 1500);
+                    EnergyHealthMeter.UseEnergy(10);
+                }
             }
         }
     }
@@ -148,7 +182,6 @@ public class PlayerMovement : MonoBehaviour
     void OnCollisionEnter(Collision Collision)
     {
         PickUp Potion;
-        PlayerActions PlayerActions = (PlayerActions)Player.GetComponent(typeof(PlayerActions));
 
         if (Collision.gameObject.name.Contains("LevelGround")) 
         {
@@ -158,8 +191,8 @@ public class PlayerMovement : MonoBehaviour
         }
         else if (Collision.gameObject.name.Contains("ManaPotion"))
         {
-            Potion = GameObject.Find("ManaPotion").GetComponent<PickUp>();
-            PlayerActions.PickUpMana(Potion);
+            //Potion = GameObject.Find("ManaPotion").GetComponent<PickUp>();
+            //PlayerActions.PickUpMana(Potion);
         }
         else if(Collision.gameObject.name.Contains("Synapse"))
         {
