@@ -12,10 +12,12 @@ public class TimerScript : MonoBehaviour
     int seconds;
     float totalseconds;
     bool GameOver = false;
+    BrainHealthMeter BrainHealthMeter;
 
     void Start () 
     {
-        Timer = 300.0f; // 3 minutes x 60 seconds
+        BrainHealthMeter = GameObject.Find("BrainHealth").GetComponent<BrainHealthMeter>();
+        Timer = 60.0f; // 3 minutes x 60 seconds
         totalseconds = Timer % 3600; 
         minutes = (int)totalseconds / 60;
         seconds = (int)totalseconds % 60;
@@ -52,8 +54,8 @@ public class TimerScript : MonoBehaviour
             TimerText.text = "Battle Time " + min + ":" + sec;
             if(minutes == 0 && seconds == 0)
             {
-                Debug.Log("GameOver");
                 GameOver = true;
+                GameManager.SetGameWinner(BrainHealthMeter.GetPlayerWhoWon());
                 Application.LoadLevel("GameOverMenu");
             }
         }
