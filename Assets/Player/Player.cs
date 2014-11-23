@@ -4,6 +4,10 @@ using System.Collections.Generic;
 using System;
 public class Player : MonoBehaviour 
 {
+    const int DISEASE = 0;
+    const int CURE = 1;
+
+    public GameObject Synapses;
     private TimerScript TimerScript;
 	
     private int Lives;
@@ -11,12 +15,16 @@ public class Player : MonoBehaviour
 
     private EnergyHealthMeter EnergyHealthMeter;
     private SynapsesHolder SynapsesHolder;
+    private BrainHealthMeter BrainHealthMeter;
+    private HUDManager HUD;
     void Start()
     {
+        HUD = (HUDManager)GameObject.Find("Camera").GetComponent<HUDManager>();
+        BrainHealthMeter = (BrainHealthMeter)GameObject.Find("BrainHealth").GetComponent<BrainHealthMeter>();
         SynapsesHolder = (SynapsesHolder)GameObject.Find("Camera").GetComponent<SynapsesHolder>();
         EnergyHealthMeter = (EnergyHealthMeter)GameObject.Find("PlayerEnergy").GetComponent<EnergyHealthMeter>();
         TimerScript = (TimerScript)GameObject.Find("Timer").GetComponent<TimerScript>();
-        if(GameManager.GetLives() == null || GameManager.GetLives() == -1)
+        if(GameManager.GetLives() == -1)
         {
             Debug.Log("Player Start() - GameManager Stuff is Unset");
             Lives = 3;
@@ -26,32 +34,30 @@ public class Player : MonoBehaviour
             Lives = GameManager.GetLives();
         }
     }
-    public void RespawnPlayer(bool AllLivesLost)
+    public void RespawnPlayer()
     {
-        Debug.Log("RespawnPlayer is being called");
-        if(AllLivesLost) // If lives was 0 on death - Come back with only 1 life and 50% BrainEnergy
+        GameManager.SetLives(GetLives());
+        GameManager.SetPlayerEnergy(EnergyHealthMeter.GetEnergyHealth());
+        GameManager.SetGameTimerStart(TimerScript.GetCurrentTime());
+        Debug.Log(GameManager.Print());
+        if (GameManager.GetPlayerSelected() == DISEASE)
         {
-            GameManager.SetLives(1);
-            GameManager.SetPlayerEnergy(250.0f);
-            GameManager.SetGameTimerStart(TimerScript.GetCurrentTime());
-            GameManager.SetSynapsesList(SynapsesHolder.GetAllSynapses());
-            Debug.Log(GameManager.Print());
+            Destroy(GameObject.Find("PlayerTwoDisease(Clone)"));
         }
-        else if(!AllLivesLost) // Bring him back with everything "intact"
+        else if (GameManager.GetPlayerSelected() == CURE)
         {
-            GameManager.SetLives(GetLives());
-            GameManager.SetPlayerEnergy(EnergyHealthMeter.GetEnergyHealth());
-            GameManager.SetSynapsesList(SynapsesHolder.GetAllSynapses());
-            GameManager.SetGameTimerStart(TimerScript.GetCurrentTime());
-            Debug.Log(GameManager.Print());
+            Destroy(GameObject.Find("PlayerOne_Cure(Clone)"));
         }
-        Application.LoadLevel("Brain");
+        HUD.RespawnPlayerInWorld();
     }
     void Update()
     {
         if(Lives == 0)
         {
-            RespawnPlayer(true);
+            // Game Over
+            Debug.Log("Getting into Game Over!");
+            GameManager.SetGameWinner(BrainHealthMeter.GetPlayerWhoWon());
+            Application.LoadLevel("GameOverMenu");
         }
     }
 	public void SetLives(int LivesToSet)

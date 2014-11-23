@@ -27,11 +27,8 @@ public class SynapsesHolder : MonoBehaviour
 
     List<GameObject> Synapses = new List<GameObject>();
 	// Use this for initialization
-	void Start () 
+	void Awake () 
     {
-        if (GameManager.GetSynapsesList().Count == 0)
-        {
-            // Add to list
             Synapses.Add(SynapseCol1_1);
             Synapses.Add(SynapseCol1_2);
             Synapses.Add(SynapseCol1_3);
@@ -48,11 +45,6 @@ public class SynapsesHolder : MonoBehaviour
             Synapses.Add(SynapseCol5_1);
             Synapses.Add(SynapseCol5_2);
             Synapses.Add(SynapseCol5_3);
-        }
-        else
-        {
-            Synapses = GameManager.GetSynapsesList();
-        }
     }
     public List<GameObject> GetAllSynapses()
     {

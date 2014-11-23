@@ -4,21 +4,12 @@ using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour 
 {
-    public static int PlayerSelected;
-    public static int GameWinner;
-    public static float Timer;
-    public static int Lives;
-    public static float PlayerEnergy;
-    public static List<GameObject> Synapses = new List<GameObject>();
+    public static int PlayerSelected = -1;
+    public static int GameWinner = -1;
+    public static float Timer = -1f;
+    public static int Lives = -1;
+    public static float PlayerEnergy = -1;
 	
-    public static void SetSynapsesList(List<GameObject> SetTo)
-    {
-        Synapses = SetTo;
-    }
-    public static List<GameObject> GetSynapsesList()
-    {
-        return Synapses;
-    }
     public static void SetPlayerEnergy(float Energy)
     {
         PlayerEnergy = Energy;
@@ -63,7 +54,6 @@ public class GameManager : MonoBehaviour
     {
         string Print = "GameManager Stores:";
         Print +=    "\nPlayerLives: " + Lives +  
-                    "\nSynapses.Count :" + Synapses.Count +
                     "\nPlayerEnergy :" + PlayerEnergy +
                     "\nPlayerSelected :" + PlayerSelected +
                     "\nGameWinner :" + GameWinner +

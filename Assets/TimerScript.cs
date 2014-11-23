@@ -17,7 +17,7 @@ public class TimerScript : MonoBehaviour
     void Start () 
     {
         BrainHealthMeter = GameObject.Find("BrainHealth").GetComponent<BrainHealthMeter>();
-        if(GameManager.GetTimerStartTime() == null || GameManager.GetTimerStartTime() == -1f || GameManager.GetTimerStartTime() == 0)
+        if(GameManager.GetTimerStartTime() == -1f)
         {
             Timer = 180.0f; // 3 minutes x 60 seconds
         }

@@ -38,8 +38,6 @@ public class BulletBehavior : MonoBehaviour
                     if (Player.GetLives() > 0)
                     {
                         Player.SetLives(Player.GetLives() - 1);
-                        // Should Respawn Player
-                        Player.RespawnPlayer(false);
                     }
                 }
             }
@@ -51,8 +49,6 @@ public class BulletBehavior : MonoBehaviour
                     if (Player.GetLives() > 0)
                     {
                         Player.SetLives(Player.GetLives() - 1);
-                        // Should Respawn Player
-                        Player.RespawnPlayer(false);
                     }
                 }
             }

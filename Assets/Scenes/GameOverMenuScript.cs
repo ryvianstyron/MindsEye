@@ -27,10 +27,14 @@ public class GameOverMenuScript : MonoBehaviour
     }
     public void ReplayButtonClicked()
     {
-        // Reset GameManager
-        GameManager.SetGameWinner(-1);
+        // Reset GameManager Stats
+
         GameManager.SetPlayerSelected(-1);
+        GameManager.SetGameWinner(-1);
         GameManager.SetGameTimerStart(-1f);
+        GameManager.SetLives(-1);
+        GameManager.SetPlayerEnergy(-1);
+
         Application.LoadLevel("StartMenu");
     }
     public void QuitButtonClicked()

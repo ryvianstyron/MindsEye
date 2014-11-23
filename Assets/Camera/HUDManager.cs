@@ -37,27 +37,48 @@ public class HUDManager : MonoBehaviour
 
         if (GameManager.GetPlayerSelected() == DISEASE)
         {
-            Debug.Log("DISEASE PLAYER");
-
             DiseasePlayerSelected = true;
             Vector3 PositionToSpawn = PlayerSpawner.GetRandomSpawnPoint();
             PositionToSpawn.y += 3;
             GameObject PlayerDisease = (GameObject)Instantiate(Disease, PositionToSpawn, Quaternion.identity);
             Player = (Player)PlayerDisease.GetComponent(typeof(Player));
             CameraFollowScript.SetUpCamera(PlayerDisease);
-            ObjectiveText.text = "Objective: You are a disease... \n1. Damage Synapses\n2. Destroy Dopamine Sacs \n3. Annihilate the Cure!";
+            //ObjectiveText.text = "Objective: You are a disease... \n1. Damage Synapses\n2. Destroy Dopamine Sacs \n3. Annihilate the Cure!";
 
         }
         else if (GameManager.GetPlayerSelected() == CURE)
         {
-            Debug.Log("CURE PLAYER");
             CurePlayerSelected = true;
             Vector3 PositionToSpawn = PlayerSpawner.GetRandomSpawnPoint();
             PositionToSpawn.y += 3;
             GameObject PlayerCure = (GameObject)Instantiate(Cure, PositionToSpawn, Quaternion.identity);
             Player = (Player)PlayerCure.GetComponent(typeof(Player));
             CameraFollowScript.SetUpCamera(PlayerCure);
-            ObjectiveText.text = "Objective: You are a cure... \n1. Repair Synapses\n2. Release Dopamine Sacs \n3. Annihilate the Disease!";
+            //ObjectiveText.text = "Objective: You are a cure... \n1. Repair Synapses\n2. Release Dopamine Sacs \n3. Annihilate the Disease!";
+        }
+    }
+    public void RespawnPlayerInWorld()
+    {
+        if (GameManager.GetPlayerSelected() == DISEASE)
+        {
+            DiseasePlayerSelected = true;
+            Vector3 PositionToSpawn = PlayerSpawner.GetRandomSpawnPoint();
+            PositionToSpawn.y += 3;
+            GameObject PlayerDisease = (GameObject)Instantiate(Disease, PositionToSpawn, Quaternion.identity);
+            Player = (Player)PlayerDisease.GetComponent(typeof(Player));
+            CameraFollowScript.SetUpCamera(PlayerDisease);
+            //ObjectiveText.text = "Objective: You are a disease... \n1. Damage Synapses\n2. Destroy Dopamine Sacs \n3. Annihilate the Cure!";
+
+        }
+        else if (GameManager.GetPlayerSelected() == CURE)
+        {
+            CurePlayerSelected = true;
+            Vector3 PositionToSpawn = PlayerSpawner.GetRandomSpawnPoint();
+            PositionToSpawn.y += 3;
+            GameObject PlayerCure = (GameObject)Instantiate(Cure, PositionToSpawn, Quaternion.identity);
+            Player = (Player)PlayerCure.GetComponent(typeof(Player));
+            CameraFollowScript.SetUpCamera(PlayerCure);
+            //ObjectiveText.text = "Objective: You are a cure... \n1. Repair Synapses\n2. Release Dopamine Sacs \n3. Annihilate the Disease!";
         }
     }
     public bool IsCurePlayerSelected()

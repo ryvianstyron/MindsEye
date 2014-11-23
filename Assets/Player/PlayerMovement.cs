@@ -53,18 +53,17 @@ public class PlayerMovement : MonoBehaviour
         MovementSpeedMaxTest = PlayerRigidBody.transform.forward * MovementSpeed;
         Player = gameObject.GetComponent<Player>();
     }
-    void FixedUpdate()
+    void Update()
     {
         if (PlayerRigidBody.transform.position.y < DEATH_DISTANCE) // - 1 to life when you fall off
         {
-            Debug.Log("Fell Off Platform");
+            /*Debug.Log("Fell Off Platform");
             if(Player.GetLives() > 0)
             {
                 Player.SetLives(Player.GetLives() - 1);
-                // Should Respawn Player
                 Debug.Log("Respawning Player with Intact Stats");
-                Player.RespawnPlayer(false);
-            }
+                Player.RespawnPlayer();
+            }*/
         }
         if (Input.GetKeyDown("up") && IsGrounded)
         {
@@ -161,6 +160,19 @@ public class PlayerMovement : MonoBehaviour
                 {
                     Player.SetLives(Player.GetLives() - 1);
                 }
+            }
+        }
+    }
+    void OnTriggerEnter(Collider Collider)
+    {
+        if(Collider.gameObject.name.Contains("DeathTrigger"))
+        {
+            Debug.Log("Hitting Death Trigger");
+            if (Player.GetLives() > 0)
+            {
+                Player.SetLives(Player.GetLives() - 1);
+                Debug.Log("Respawning Player with Intact Stats");
+                Player.RespawnPlayer();
             }
         }
     }
