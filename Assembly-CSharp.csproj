@@ -39,10 +39,10 @@
 	<Reference Include="System.Core" />
 	<Reference Include="System.Xml.Linq" />
 	<Reference Include="UnityEngine">
-	  <HintPath>C:/Program Files (x86)/Unity4.6B/Editor/Data/Managed/UnityEngine.dll</HintPath>
+	  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/Managed/UnityEngine.dll</HintPath>
 	</Reference>
 	<Reference Include="UnityEditor">
-	  <HintPath>C:/Program Files (x86)/Unity4.6B/Editor/Data/Managed/UnityEditor.dll</HintPath>
+	  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/Managed/UnityEditor.dll</HintPath>
 	</Reference>
   </ItemGroup>
   <ItemGroup>
@@ -69,18 +69,18 @@
      <Compile Include="Assets\Power\Water\Water.cs" />
      <Compile Include="Assets\RechargeStationBehavior.cs" />
      <Compile Include="Assets\Scenes\CharacterSelectionScript.cs" />
+     <Compile Include="Assets\Scenes\ControlsMenuScript.cs" />
+     <Compile Include="Assets\Scenes\GameManager.cs" />
+     <Compile Include="Assets\Scenes\GameOverMenuScript.cs" />
      <Compile Include="Assets\Scenes\StartMenuScript.cs" />
      <Compile Include="Assets\Switch\SwitchBehavior.cs" />
      <Compile Include="Assets\Synapse\SynapseBehavior.cs" />
      <Compile Include="Assets\SynapsesHolder.cs" />
      <Compile Include="Assets\TimerScript.cs" />
+     <Compile Include="Assets\WayPointsHolder.cs" />
  <Reference Include="UnityEngine.UI">
- <HintPath>C:/Program Files (x86)/Unity4.6B/Editor/Data/UnityExtensions/Unity/GUISystem/4.6.0/UnityEngine.UI.dll</HintPath>
+ <HintPath>C:/Program Files (x86)/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/4.6.0/UnityEngine.UI.dll</HintPath>
  </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="Assembly-UnityScript-firstpass.unityproj">
-      <Project>{8F644948-8DE4-18E9-093B-E8DBC95D8F36}</Project>      <Name>Assembly-UnityScript-firstpass</Name>    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -29,23 +29,30 @@ public class SynapsesHolder : MonoBehaviour
 	// Use this for initialization
 	void Start () 
     {
-	    // Add to list
-        Synapses.Add(SynapseCol1_1);
-        Synapses.Add(SynapseCol1_2);
-        Synapses.Add(SynapseCol1_3);
+        if (GameManager.GetSynapsesList().Count == 0)
+        {
+            // Add to list
+            Synapses.Add(SynapseCol1_1);
+            Synapses.Add(SynapseCol1_2);
+            Synapses.Add(SynapseCol1_3);
 
-        Synapses.Add(SynapseCol2_1);
-        Synapses.Add(SynapseCol2_2);
+            Synapses.Add(SynapseCol2_1);
+            Synapses.Add(SynapseCol2_2);
 
-        Synapses.Add(SynapseCol3_1);
-        Synapses.Add(SynapseCol3_2);
+            Synapses.Add(SynapseCol3_1);
+            Synapses.Add(SynapseCol3_2);
 
-        Synapses.Add(SynapseCol4_1);
-        Synapses.Add(SynapseCol4_2);
+            Synapses.Add(SynapseCol4_1);
+            Synapses.Add(SynapseCol4_2);
 
-        Synapses.Add(SynapseCol5_1);
-        Synapses.Add(SynapseCol5_2);
-        Synapses.Add(SynapseCol5_3);
+            Synapses.Add(SynapseCol5_1);
+            Synapses.Add(SynapseCol5_2);
+            Synapses.Add(SynapseCol5_3);
+        }
+        else
+        {
+            Synapses = GameManager.GetSynapsesList();
+        }
     }
     public List<GameObject> GetAllSynapses()
     {

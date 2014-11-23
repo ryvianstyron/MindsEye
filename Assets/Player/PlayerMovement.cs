@@ -15,7 +15,7 @@ public class PlayerMovement : MonoBehaviour
 
     public float MovementSpeedMax;
     private Vector3 MovementSpeedMaxTest;
-    public int MovementSpeed; // 250
+    public int MovementSpeed; 
 
     public float JumpSpeed;
     public GameObject PlayerGameObject;
@@ -34,6 +34,7 @@ public class PlayerMovement : MonoBehaviour
     private SynapseBehavior SynapseBehavior;
     private DopamineSacBehavior DopmaineSacBehavior;
     private RechargeStationBehavior RechargeStationBehavior;
+    private TimerScript TimerScript;
 
     private EnergyHealthMeter EnergyHealthMeter;
 
@@ -43,6 +44,8 @@ public class PlayerMovement : MonoBehaviour
     }
     void Start()
     {
+        TimerScript = (TimerScript)GameObject.Find("Timer").GetComponent<TimerScript>();
+        MovementSpeed = 225;
         JumpSpeed = 60;
         HUD = GameObject.Find("Camera").GetComponent<HUDManager>();
         EnergyHealthMeter = (EnergyHealthMeter)GameObject.Find("PlayerEnergy").GetComponent<EnergyHealthMeter>();
@@ -52,9 +55,16 @@ public class PlayerMovement : MonoBehaviour
     }
     void FixedUpdate()
     {
-        if (PlayerRigidBody.transform.position.y < DEATH_DISTANCE)
+        if (PlayerRigidBody.transform.position.y < DEATH_DISTANCE) // - 1 to life when you fall off
         {
-            HUD.OnScreenDebugLine("Player Should totally be dead right now");
+            Debug.Log("Fell Off Platform");
+            if(Player.GetLives() > 0)
+            {
+                Player.SetLives(Player.GetLives() - 1);
+                // Should Respawn Player
+                Debug.Log("Respawning Player with Intact Stats");
+                Player.RespawnPlayer(false);
+            }
         }
         if (Input.GetKeyDown("up") && IsGrounded)
         {
@@ -134,9 +144,29 @@ public class PlayerMovement : MonoBehaviour
             }
         }
     }
+    void OnCollisionEnter(Collision Collision)
+    {
+        if (Collision.gameObject.name.Contains("LevelGround") || Collision.gameObject.name.Contains("RechargeStation"))
+        {
+            IsFalling = false;
+            IsGrounded = true;
+            IsJumping = false;
+        }
+        else if (Collision.gameObject.name.Contains("Synapse"))
+        {
+            SynapseBehavior SynapseBehavior = Collision.gameObject.GetComponent<SynapseBehavior>();
+            if (HUD.IsCurePlayerSelected() && SynapseBehavior.GetSynapseType() == 0 || HUD.IsDiseasePlayerSelected() && SynapseBehavior.GetSynapseType() == 1)
+            {
+                if (Player.GetLives() > 0)
+                {
+                    Player.SetLives(Player.GetLives() - 1);
+                }
+            }
+        }
+    }
     void OnCollisionExit(Collision Collision)
     {
-        if (Collision.gameObject.name.Contains("LevelGround") && !IsJumping) 
+        if (Collision.gameObject.name.Contains("LevelGround") && !IsJumping)
         {
             //Debug.Log("Exit Level Ground");
             IsFalling = true;
@@ -179,34 +209,7 @@ public class PlayerMovement : MonoBehaviour
     {
         return DopmaineSacBehavior;
     }
-    void OnCollisionEnter(Collision Collision)
-    {
-        PickUp Potion;
-
-        if (Collision.gameObject.name.Contains("LevelGround")) 
-        {
-            IsFalling = false;
-            IsGrounded = true;
-            IsJumping = false;
-        }
-        else if (Collision.gameObject.name.Contains("ManaPotion"))
-        {
-            //Potion = GameObject.Find("ManaPotion").GetComponent<PickUp>();
-            //PlayerActions.PickUpMana(Potion);
-        }
-        else if(Collision.gameObject.name.Contains("Synapse"))
-        {
-            SynapseBehavior SynapseBehavior = Collision.gameObject.GetComponent<SynapseBehavior>();
-            if (HUD.IsCurePlayerSelected() && SynapseBehavior.GetSynapseType() == 0 || HUD.IsDiseasePlayerSelected() && SynapseBehavior.GetSynapseType() == 1)
-            {
-                if(Player.GetLives() > 0)
-                {
-                    Player.SetLives(Player.GetLives() - 1);
-                }
-                HUD.UpdateLives();
-            }
-        }
-    }
+   
     protected void Jump()
     {
         PlayerRigidBody.AddForce(new Vector3(0, 10, 0) * JumpSpeed);
@@ -251,12 +254,12 @@ public class PlayerMovement : MonoBehaviour
                     }
                     else if(Hit.collider.name.Contains("DopamineSac"))
                     {
-                        if (Hit.distance <= 4.0f)
+                        if (Hit.distance <= 6.0f)
                         {
                             WithinDopamineSacRangeForReleaseOrBurst = true;
                             SetDopamineSacBehavior((DopamineSacBehavior)Hit.collider.gameObject.GetComponent<DopamineSacBehavior>());
                         }
-                        else if (Hit.distance > 4.0f)
+                        else if (Hit.distance > 6.0f)
                         {
                             WithinDopamineSacRangeForReleaseOrBurst = false;
                         }

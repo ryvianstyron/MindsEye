@@ -26,35 +26,4 @@ public class PickUp : MonoBehaviour
             Player = (Player)Disease.GetComponent(typeof(Player));
         }
     }
-    public void ApplyPickupToPlayer()
-    {
-        int PlayerHealth = Player.GetLives();
-        int PlayerMana = Player.GetMana();
-
-        /*if(PickUpType == 0) // Health
-        {
-            if (PlayerHealth + PickUpAmount >= MaxPlayerHealth)
-            {
-                Player.SetHealth(MaxPlayerHealth);
-            }
-            else
-            {
-                Player.SetHealth(PlayerHealth + PickUpAmount);
-            }
-            HUD.UpdateHealthBarOnScreen();
-        }
-        else if(PickUpType == 1) // Mana
-        {
-            if (PlayerMana + PickUpAmount >= MaxPlayerMana)
-            {
-                Player.SetMana(MaxPlayerMana);
-            }
-            else
-            {
-                Player.SetMana(PlayerMana + PickUpAmount);
-            }
-            HUD.UpdateManaBarOnScreen();
-        }*/
-        Destroy(gameObject);
-    }
 }
