@@ -1,0 +1,18 @@
+Cases:
+
+Player Death:
+Should Respawn with:
+if(Lives > 0)
+	Return with same live
+	Return with same brain energy
+	Synapses shouldn't be remade
+if(Lives == 0)
+	Return with 1 life
+	Synapses shouldn't be remade
+	BrainEnergy at 50%
+
+If fresh start - 
+		Synapses should be made
+		Lives = 3
+		brainEnergy = 100		
+		

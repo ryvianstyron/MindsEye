@@ -34,6 +34,7 @@ public class PlayerMovement : MonoBehaviour
     private SynapseBehavior SynapseBehavior;
     private DopamineSacBehavior DopmaineSacBehavior;
     private RechargeStationBehavior RechargeStationBehavior;
+    private TimerScript TimerScript;
 
     private EnergyHealthMeter EnergyHealthMeter;
 
@@ -43,6 +44,7 @@ public class PlayerMovement : MonoBehaviour
     }
     void Start()
     {
+        TimerScript = (TimerScript)GameObject.Find("Timer").GetComponent<TimerScript>();
         MovementSpeed = 225;
         JumpSpeed = 60;
         HUD = GameObject.Find("Camera").GetComponent<HUDManager>();
@@ -53,9 +55,16 @@ public class PlayerMovement : MonoBehaviour
     }
     void FixedUpdate()
     {
-        if (PlayerRigidBody.transform.position.y < DEATH_DISTANCE)
+        if (PlayerRigidBody.transform.position.y < DEATH_DISTANCE) // - 1 to life when you fall off
         {
-            HUD.OnScreenDebugLine("Player Should totally be dead right now");
+            Debug.Log("Fell Off Platform");
+            if(Player.GetLives() > 0)
+            {
+                Player.SetLives(Player.GetLives() - 1);
+                // Should Respawn Player
+                Debug.Log("Respawning Player with Intact Stats");
+                Player.RespawnPlayer(false);
+            }
         }
         if (Input.GetKeyDown("up") && IsGrounded)
         {
@@ -152,7 +161,6 @@ public class PlayerMovement : MonoBehaviour
                 {
                     Player.SetLives(Player.GetLives() - 1);
                 }
-                HUD.UpdateLives();
             }
         }
     }

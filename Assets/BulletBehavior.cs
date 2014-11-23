@@ -15,7 +15,6 @@ public class BulletBehavior : MonoBehaviour
     IEnumerator DestroyBullet()
     {
         yield return new WaitForSeconds(3);
-        Debug.Log("Destroying Bullet");
         Destroy(gameObject);
     }
 	void Update () 
@@ -24,7 +23,8 @@ public class BulletBehavior : MonoBehaviour
 	}
     void OnCollisionEnter(Collision Collision)
     {
-        if (!(Collision.collider.gameObject.name.Contains("PlayerTwo")) || !(Collision.collider.gameObject.name.Contains("PlayerTwo")))
+        // Destroy bullet if it hits anything other than another player
+        if (!(Collision.collider.gameObject.name.Contains("PlayerTwo")) || !(Collision.collider.gameObject.name.Contains("PlayerTwo"))) 
         {
             Destroy(gameObject);
         }
@@ -38,6 +38,8 @@ public class BulletBehavior : MonoBehaviour
                     if (Player.GetLives() > 0)
                     {
                         Player.SetLives(Player.GetLives() - 1);
+                        // Should Respawn Player
+                        Player.RespawnPlayer(false);
                     }
                 }
             }
@@ -49,6 +51,8 @@ public class BulletBehavior : MonoBehaviour
                     if (Player.GetLives() > 0)
                     {
                         Player.SetLives(Player.GetLives() - 1);
+                        // Should Respawn Player
+                        Player.RespawnPlayer(false);
                     }
                 }
             }

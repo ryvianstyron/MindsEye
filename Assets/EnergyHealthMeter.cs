@@ -5,11 +5,18 @@ using UnityEngine.UI;
 public class EnergyHealthMeter : MonoBehaviour 
 {
     public Button EnergyButton;
-    private float EnergyHealth = 500.0f;
+    private float EnergyHealth;
     private const float MAX_ENERGY_HEALTH = 500.0f;
 	void Start () 
     {
-	
+        if(GameManager.GetPlayerEnergy() == null || GameManager.GetPlayerEnergy() == -1f || GameManager.GetPlayerEnergy() == 0)
+        {
+            EnergyHealth = 500.0f;
+        }
+        else
+        {
+            EnergyHealth = GameManager.GetPlayerEnergy();
+        }
 	}
 	void Update () 
     {
@@ -32,5 +39,9 @@ public class EnergyHealthMeter : MonoBehaviour
     public float GetEnergyHealth()
     {
         return EnergyHealth;
+    }
+    public void SetBrainEnergyHealth(float BrainEnergy)
+    {
+        EnergyHealth = BrainEnergy;
     }
 }

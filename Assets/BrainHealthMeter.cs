@@ -17,29 +17,39 @@ public class BrainHealthMeter : MonoBehaviour
 	void Start () 
     {
         SynapsesHolder = (SynapsesHolder)GameObject.Find("Camera").GetComponent<SynapsesHolder>();
-        Synapses = SynapsesHolder.GetAllSynapses();
+        if(GameManager.GetSynapsesList().Count == 0)
+        {
+            Debug.Log("Brain Health Meter Start() - GameManager.GetSynapsesList().Count == 0");
+            Synapses = SynapsesHolder.GetAllSynapses();
+        }
+        else
+        {
+            Debug.Log("Brain Health Meter Start() - GameManager.GetSynapsesList() being used to set Synapses");
+            Synapses = GameManager.GetSynapsesList();
+        }
 	}
-	
-	// Update is called once per frame
     void Update()
     {
-        CurrentBrainHealth = 0; // Reset on every tick
-        foreach (GameObject Synapse in Synapses)
+        Debug.Log(Synapses.Count);
+        if(Synapses.Count != 0)
         {
-            SynapseBehavior SynapseBehavior = (SynapseBehavior)Synapse.GetComponent<SynapseBehavior>();
-            CurrentBrainHealth += SynapseBehavior.GetSynapseHealth();
+            CurrentBrainHealth = 0; // Reset on every tick
+            foreach (GameObject Synapse in Synapses)
+            {
+                SynapseBehavior SynapseBehavior = (SynapseBehavior)Synapse.GetComponent<SynapseBehavior>();
+                CurrentBrainHealth += SynapseBehavior.GetSynapseHealth();
+            }
+            // Need to code this better
+            if (CurrentBrainHealth != 0)
+            {
+                CurrentBrainHealth -= PermanentDamage;
+            }
+            if (CurrentBrainHealth != 100)
+            {
+                CurrentBrainHealth += PermanentBonus;
+            }
+            BrainFill.image.fillAmount = (CurrentBrainHealth / MAX_BRAIN_HEALTH) * 1;
         }
-
-        // Need to code this better
-        if(CurrentBrainHealth != 0)
-        {
-            CurrentBrainHealth -= PermanentDamage;
-        }
-        if(CurrentBrainHealth != 100)
-        {
-            CurrentBrainHealth += PermanentBonus;
-        }
-        BrainFill.image.fillAmount = (CurrentBrainHealth / MAX_BRAIN_HEALTH) * 1;
     }
     public void ApplyPermanentDamage(int Damage)
     {

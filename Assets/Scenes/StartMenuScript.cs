@@ -6,7 +6,6 @@ public class StartMenuScript : MonoBehaviour
 {
     public void StartGameButtonClicked()
     {
-        Debug.Log("Start Clicked");
         Application.LoadLevel("CharacterSelectionMenu");
     }
     public void ControlsButtonClicked()

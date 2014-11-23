@@ -30,6 +30,7 @@ public class GameOverMenuScript : MonoBehaviour
         // Reset GameManager
         GameManager.SetGameWinner(-1);
         GameManager.SetPlayerSelected(-1);
+        GameManager.SetGameTimerStart(-1f);
         Application.LoadLevel("StartMenu");
     }
     public void QuitButtonClicked()

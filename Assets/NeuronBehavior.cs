@@ -195,7 +195,6 @@ public class NeuronBehavior : MonoBehaviour
                 {
                     Player.SetLives(Player.GetLives() - 1);
                 }
-                HUD.UpdateLives();
             }
         }
         else if(Collider.gameObject.name.Contains("EnergyBullet"))
