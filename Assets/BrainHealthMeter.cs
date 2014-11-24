@@ -7,10 +7,7 @@ public class BrainHealthMeter : MonoBehaviour
 {
     const float MAX_BRAIN_HEALTH = 1200f; 
     private float CurrentBrainHealth;
-    public Button BrainFill;
-
-    private float PermanentDamage = 0;
-    private float PermanentBonus = 0;
+    public Image BrainFill;
    
     SynapsesHolder SynapsesHolder;
     List<GameObject> Synapses = new List<GameObject>();
@@ -27,24 +24,7 @@ public class BrainHealthMeter : MonoBehaviour
             SynapseBehavior SynapseBehavior = (SynapseBehavior)Synapse.GetComponent<SynapseBehavior>();
             CurrentBrainHealth += SynapseBehavior.GetSynapseHealth();
         }
-        // Need to code this better
-        if (CurrentBrainHealth != 0)
-        {
-            CurrentBrainHealth -= PermanentDamage;
-        }
-        if (CurrentBrainHealth != 100)
-        {
-            CurrentBrainHealth += PermanentBonus;
-        }
-        BrainFill.image.fillAmount = (CurrentBrainHealth / MAX_BRAIN_HEALTH) * 1;
-    }
-    public void ApplyPermanentDamage(int Damage)
-    {
-        PermanentDamage += Damage;
-    }
-    public void ApplyPermanentBonus(int Bonus)
-    {
-        PermanentBonus += Bonus;
+        BrainFill.fillAmount = (CurrentBrainHealth / MAX_BRAIN_HEALTH) * 1;
     }
     public int GetPlayerWhoWon()
     {
@@ -53,13 +33,12 @@ public class BrainHealthMeter : MonoBehaviour
         if(BrainHealthPercentage <= 0.5f)
         {
             PlayerWhoWon = 0;
-            Debug.Log("BrainHealth Percentage: " + BrainHealthPercentage + " PlayerWon: " + PlayerWhoWon);
         }
         else if(BrainHealthPercentage > 0.5f)
         {
             PlayerWhoWon = 1;
-            Debug.Log("BrainHealth Percentage: " + BrainHealthPercentage + " PlayerWon: " + PlayerWhoWon);
         }
+        Debug.Log("BrainHealth Percentage: " + BrainHealthPercentage + " PlayerWon: " + PlayerWhoWon);
         return PlayerWhoWon;
     }
 }

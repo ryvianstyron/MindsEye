@@ -7,9 +7,7 @@ public class HUDManager : MonoBehaviour
     const int DISEASE = 0;
     const int CURE = 1;
 
-    public Text ManaText;
     public Text LivesText;
-    public Text ObjectiveText;
 
     public GameObject Cure;
     public GameObject Disease;
@@ -28,7 +26,7 @@ public class HUDManager : MonoBehaviour
 
     void Update()
     {
-        LivesText.text = "Lives: " + Player.GetLives();
+        LivesText.text = "lives " + Player.GetLives();
     }
     void Start()
     {
@@ -43,7 +41,6 @@ public class HUDManager : MonoBehaviour
             GameObject PlayerDisease = (GameObject)Instantiate(Disease, PositionToSpawn, Quaternion.identity);
             Player = (Player)PlayerDisease.GetComponent(typeof(Player));
             CameraFollowScript.SetUpCamera(PlayerDisease);
-            //ObjectiveText.text = "Objective: You are a disease... \n1. Damage Synapses\n2. Destroy Dopamine Sacs \n3. Annihilate the Cure!";
 
         }
         else if (GameManager.GetPlayerSelected() == CURE)
@@ -54,7 +51,6 @@ public class HUDManager : MonoBehaviour
             GameObject PlayerCure = (GameObject)Instantiate(Cure, PositionToSpawn, Quaternion.identity);
             Player = (Player)PlayerCure.GetComponent(typeof(Player));
             CameraFollowScript.SetUpCamera(PlayerCure);
-            //ObjectiveText.text = "Objective: You are a cure... \n1. Repair Synapses\n2. Release Dopamine Sacs \n3. Annihilate the Disease!";
         }
     }
     public void RespawnPlayerInWorld()
@@ -67,7 +63,6 @@ public class HUDManager : MonoBehaviour
             GameObject PlayerDisease = (GameObject)Instantiate(Disease, PositionToSpawn, Quaternion.identity);
             Player = (Player)PlayerDisease.GetComponent(typeof(Player));
             CameraFollowScript.SetUpCamera(PlayerDisease);
-            //ObjectiveText.text = "Objective: You are a disease... \n1. Damage Synapses\n2. Destroy Dopamine Sacs \n3. Annihilate the Cure!";
 
         }
         else if (GameManager.GetPlayerSelected() == CURE)
@@ -78,7 +73,6 @@ public class HUDManager : MonoBehaviour
             GameObject PlayerCure = (GameObject)Instantiate(Cure, PositionToSpawn, Quaternion.identity);
             Player = (Player)PlayerCure.GetComponent(typeof(Player));
             CameraFollowScript.SetUpCamera(PlayerCure);
-            //ObjectiveText.text = "Objective: You are a cure... \n1. Repair Synapses\n2. Release Dopamine Sacs \n3. Annihilate the Disease!";
         }
     }
     public bool IsCurePlayerSelected()

@@ -21,8 +21,6 @@ public class DopamineSacBehavior : MonoBehaviour
     
     public void Burst()
     {
-        Debug.Log("Sac Burst!");
-        
         GameObject InfectedNeuron1;
         GameObject InfectedNeuron2;
 
@@ -38,12 +36,10 @@ public class DopamineSacBehavior : MonoBehaviour
         NeuronBehavior.SetSpawnedFromDopamineSacNumber(DopamineSacNumber);
         NeuronBehavior.SetNeuronNumber(2);
 
-        BrainHealthMeter.ApplyPermanentDamage(25);
         Destroy(gameObject);
     }
     public void Release()
     {
-        Debug.Log("Sac Release!");
         GameObject HealthyNeuron1;
         GameObject HealthyNeuron2;
         
@@ -59,7 +55,6 @@ public class DopamineSacBehavior : MonoBehaviour
         NeuronBehavior.SetSpawnedFromDopamineSacNumber(DopamineSacNumber);
         NeuronBehavior.SetNeuronNumber(2);
 
-        BrainHealthMeter.ApplyPermanentBonus(25);
         Destroy(gameObject);
     }
 }

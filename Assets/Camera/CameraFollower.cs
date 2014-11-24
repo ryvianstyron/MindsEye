@@ -40,14 +40,16 @@ public class CameraFollower : MonoBehaviour
     {
         if(Target && CameraIsSetUp)
         {
-            Vector3 WantedPosition = Target.TransformPoint(0, Height, -Distance);
-            transform.position = Vector3.Lerp(transform.position, WantedPosition, Time.deltaTime * Damping);
-            if (SmoothRotation)
+            Vector3 Test = new Vector3(Target.position.x,Target.position.y,-Distance);
+            //Vector3 WantedPosition = Target.TransformPoint(0, Height, -Distance);
+            //transform.position = Vector3.Lerp(transform.position, WantedPosition, Time.deltaTime * Damping);
+            transform.position = Test;
+            /*if (SmoothRotation)
             {
                 Quaternion WantedRotation = Quaternion.LookRotation(Target.position - transform.position, Target.up);
                 transform.rotation = Quaternion.Slerp(transform.rotation, WantedRotation, Time.deltaTime * RotationDamping);
             }
-            else transform.LookAt(Target, Target.up);
+            else transform.LookAt(Target, Target.up);*/
 
             if (LockRotation)
             {

@@ -4,12 +4,12 @@ using UnityEngine.UI;
 
 public class EnergyHealthMeter : MonoBehaviour 
 {
-    public Button EnergyButton;
+    public Image EnergyImage;
     private float EnergyHealth;
     private const float MAX_ENERGY_HEALTH = 500.0f;
 	void Start () 
     {
-        if(GameManager.GetPlayerEnergy() == null || GameManager.GetPlayerEnergy() == -1f || GameManager.GetPlayerEnergy() == 0)
+        if(GameManager.GetPlayerEnergy() == -1f)
         {
             EnergyHealth = 500.0f;
         }
@@ -20,7 +20,7 @@ public class EnergyHealthMeter : MonoBehaviour
 	}
 	void Update () 
     {
-        EnergyButton.image.fillAmount = (EnergyHealth / MAX_ENERGY_HEALTH) * 1;
+        EnergyImage.fillAmount = (EnergyHealth / MAX_ENERGY_HEALTH) * 1;
 	}
     public void UseEnergy(float EnergyUsed)
     {

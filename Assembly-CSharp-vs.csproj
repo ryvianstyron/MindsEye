@@ -51,33 +51,23 @@
      <Compile Include="Assets\Camera\CameraFollower.cs" />
      <Compile Include="Assets\Camera\HUDManager.cs" />
      <Compile Include="Assets\DopamineSacBehavior.cs" />
-     <Compile Include="Assets\Enemy\Enemy.cs" />
      <Compile Include="Assets\EnergyHealthMeter.cs" />
      <Compile Include="Assets\NeuronBehavior.cs" />
-     <Compile Include="Assets\PickUps\PickUp.cs" />
      <Compile Include="Assets\Player\Player.cs" />
      <Compile Include="Assets\Player\PlayerMovement.cs" />
-     <Compile Include="Assets\Player\PlayerPowerActions.cs" />
-     <Compile Include="Assets\Player\Weapon\Weapon.cs" />
      <Compile Include="Assets\PlayerSpawnPoint.cs" />
      <Compile Include="Assets\PlayerSpawner.cs" />
-     <Compile Include="Assets\Power\Earth\Earth.cs" />
-     <Compile Include="Assets\Power\Earth\FallingBlockBehavior.cs" />
-     <Compile Include="Assets\Power\Earth\FloatingBlockBehavior.cs" />
-     <Compile Include="Assets\Power\Fire\Fire.cs" />
-     <Compile Include="Assets\Power\Power.cs" />
-     <Compile Include="Assets\Power\Water\Water.cs" />
      <Compile Include="Assets\RechargeStationBehavior.cs" />
      <Compile Include="Assets\Scenes\CharacterSelectionScript.cs" />
      <Compile Include="Assets\Scenes\ControlsMenuScript.cs" />
      <Compile Include="Assets\Scenes\GameManager.cs" />
      <Compile Include="Assets\Scenes\GameOverMenuScript.cs" />
      <Compile Include="Assets\Scenes\StartMenuScript.cs" />
-     <Compile Include="Assets\Switch\SwitchBehavior.cs" />
      <Compile Include="Assets\Synapse\SynapseBehavior.cs" />
      <Compile Include="Assets\SynapsesHolder.cs" />
      <Compile Include="Assets\TimerScript.cs" />
      <Compile Include="Assets\WayPointsHolder.cs" />
+     <None Include="Assets\fightBOT (free)\model\Materials\roboShader.shader" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files (x86)/Unity4.6B/Editor/Data/UnityExtensions/Unity/GUISystem/4.6.0/UnityEngine.UI.dll</HintPath>
  </Reference>

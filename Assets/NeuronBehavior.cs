@@ -24,24 +24,6 @@ public class NeuronBehavior : MonoBehaviour
 
     private List<GameObject> WayPoints;
     private int TargetSet;
-
-    public GameObject WayPoint1; // 0
-    public GameObject WayPoint2; // 1
-
-    public GameObject WayPoint3; // 2
-    public GameObject WayPoint4; // 3
-
-    public GameObject WayPoint5; // 4
-    public GameObject WayPoint6; // 5
-
-    public GameObject WayPoint7; // 6
-    public GameObject WayPoint8; // 7
-
-    public GameObject WayPoint9; // 8
-    public GameObject WayPoint10;// 9
-
-    public GameObject WayPoint11;// 10
-    public GameObject WayPoint12;// 11
     void Start()
     {
         Agent = GetComponent<NavMeshAgent>();
@@ -193,6 +175,7 @@ public class NeuronBehavior : MonoBehaviour
             {
                 if (Player.GetLives() > 0)
                 {
+                    Collider.gameObject.animation.Play("xhit_body");
                     Player.SetLives(Player.GetLives() - 1);
                 }
             }

@@ -19,7 +19,7 @@ public class TimerScript : MonoBehaviour
         BrainHealthMeter = GameObject.Find("BrainHealth").GetComponent<BrainHealthMeter>();
         if(GameManager.GetTimerStartTime() == -1f)
         {
-            Timer = 180.0f; // 3 minutes x 60 seconds
+            Timer = 181.0f; // 3 minutes x 60 seconds
         }
         else
         {
@@ -38,7 +38,7 @@ public class TimerScript : MonoBehaviour
         {
             sec = "0" + sec;
         }
-        TimerText.text = "Battle Time " + min + ":" + sec;
+        TimerText.text = "time " + min + ":" + sec;
 	}
     public float GetCurrentTime()
     {
@@ -62,7 +62,7 @@ public class TimerScript : MonoBehaviour
             {
                 sec = "0" + sec;
             }
-            TimerText.text = "Battle Time " + min + ":" + sec;
+            TimerText.text = "time " + min + ":" + sec;
             if(minutes == 0 && seconds == 0)
             {
                 Debug.Log("Getting into Game Over!");
