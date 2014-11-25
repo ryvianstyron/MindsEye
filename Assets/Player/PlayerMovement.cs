@@ -23,9 +23,9 @@ public class PlayerMovement : MonoBehaviour
 
     private HUDManager HUD;
 
-    public bool IsJumping = false;
-    public bool IsFalling = false;
-    public bool IsGrounded = true;
+    private bool IsJumping = true;
+    private bool IsFalling = true;
+    private bool IsGrounded = false;
 
     private bool WithinSynapseRangeForDamageOrRepair = false;
     private bool WithinDopamineSacRangeForReleaseOrBurst = false;
@@ -45,7 +45,7 @@ public class PlayerMovement : MonoBehaviour
     {
         BreakingSpeed = 112;
         MovementSpeed = 225;
-        JumpSpeed = 60;
+        JumpSpeed = 55;
         HUD = GameObject.Find("Camera").GetComponent<HUDManager>();
         EnergyHealthMeter = (EnergyHealthMeter)GameObject.Find("PlayerEnergy").GetComponent<EnergyHealthMeter>();
         PlayerRigidBody = transform.rigidbody.GetComponent<Rigidbody>();
@@ -67,7 +67,6 @@ public class PlayerMovement : MonoBehaviour
         {
             Run(RIGHT);
         }
-
         /*if (Input.GetKey("left") && (IsJumping || IsFalling))
         {
             RunMidAir(LEFT);
@@ -76,7 +75,6 @@ public class PlayerMovement : MonoBehaviour
         {
             RunMidAir(RIGHT);
         }*/
-
         else if(Input.GetKeyUp("left") && !IsJumping && !IsFalling)
         {
             PlayerRigidBody.AddForce(Vector3.right * BreakingSpeed);
@@ -87,7 +85,7 @@ public class PlayerMovement : MonoBehaviour
             PlayerRigidBody.AddForce(Vector3.left * BreakingSpeed);
             gameObject.animation.Play("loop_idle");
         }
-        else if (Input.GetKey("space") && WithinSynapseRangeForDamageOrRepair)
+        else if (Input.GetKey("q") && WithinSynapseRangeForDamageOrRepair)
         {
             if (HUD.IsCurePlayerSelected())
             {
@@ -108,7 +106,7 @@ public class PlayerMovement : MonoBehaviour
                 }
             }
         }
-        else if(Input.GetKeyDown("return") && WithinDopamineSacRangeForReleaseOrBurst)
+        else if(Input.GetKeyDown("e") && WithinDopamineSacRangeForReleaseOrBurst)
         {
             if(HUD.IsCurePlayerSelected())
             {
@@ -121,7 +119,7 @@ public class PlayerMovement : MonoBehaviour
                 GetDopamineSacBehavior().Burst();
             }
         }
-        else if(Input.GetKey("z") && WithinRechargeStationRangeForReplenishing)
+        else if(Input.GetKey("q") && WithinRechargeStationRangeForReplenishing)
         {
             if (HUD.IsCurePlayerSelected() || HUD.IsDiseasePlayerSelected())
             {
@@ -129,7 +127,7 @@ public class PlayerMovement : MonoBehaviour
                 GetRechargeStationBehavior().Recharge();
             }
         }
-        if(Input.GetKeyDown("x"))
+        if(Input.GetKeyDown("space"))
         {
             GameObject InstantiateBullet;
             Vector3 BulletSpawn;
@@ -137,7 +135,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 if (EnergyHealthMeter.GetEnergyHealth() > 0.0f)
                 {
-                    BulletSpawn = new Vector3(transform.position.x + 1, transform.position.y + 0.5f, transform.position.z);
+                    BulletSpawn = new Vector3(transform.position.x + 1f, transform.position.y + 1f, transform.position.z);
                     InstantiateBullet = (GameObject)Instantiate(EnergyBullet, BulletSpawn, Quaternion.identity);
                     InstantiateBullet.rigidbody.AddForce(EnergyBullet.transform.right * 1500);
                     EnergyHealthMeter.UseEnergy(10);
@@ -148,7 +146,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 if(EnergyHealthMeter.GetEnergyHealth() > 0.0f)
                 {
-                    BulletSpawn = new Vector3(transform.position.x - 1, transform.position.y + 0.5f, transform.position.z);
+                    BulletSpawn = new Vector3(transform.position.x - 1f, transform.position.y + 1f, transform.position.z);
                     InstantiateBullet = (GameObject)Instantiate(EnergyBullet, BulletSpawn, Quaternion.identity);
                     InstantiateBullet.rigidbody.AddForce(-EnergyBullet.transform.right * 1500);
                     EnergyHealthMeter.UseEnergy(10);
@@ -158,10 +156,15 @@ public class PlayerMovement : MonoBehaviour
     }
     void OnCollisionEnter(Collision Collision)
     {
-        if (Collision.gameObject.name.Contains("LevelGround") || Collision.gameObject.name.Contains("RechargeStation"))
+        if (Collision.gameObject.name.Contains("LevelGround"))
         {
             IsFalling = false;
             IsGrounded = true;
+            IsJumping = false;
+        }
+        else if (Collision.gameObject.name.Contains("RechargeStation") || Collision.gameObject.name.Contains("DopamineSac"))
+        {
+            IsFalling = false;
             IsJumping = false;
         }
         else if (Collision.gameObject.name.Contains("Synapse"))
@@ -207,6 +210,17 @@ public class PlayerMovement : MonoBehaviour
         if (Collision.gameObject.name.Contains("LevelGround") && !IsJumping)
         {
             IsFalling = true;
+            gameObject.animation.Stop("loop_run_funny");
+        }
+        else if (Collision.gameObject.name.Contains("RechargeStation") && !IsJumping && !IsGrounded)
+        {
+            IsFalling = true;
+            gameObject.animation.Stop("loop_run_funny");
+        }
+        else if (Collision.gameObject.name.Contains("DopamineSac") && !IsJumping && !IsGrounded)
+        {
+            IsFalling = true;
+            gameObject.animation.Stop("loop_run_funny");
         }
     }
     public void SetRechargeStationBehavior(RechargeStationBehavior RechargeStation)

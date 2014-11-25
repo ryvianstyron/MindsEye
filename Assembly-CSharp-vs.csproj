@@ -39,37 +39,37 @@
 	<Reference Include="System.Core" />
 	<Reference Include="System.Xml.Linq" />
 	<Reference Include="UnityEngine">
-	  <HintPath>C:/Program Files (x86)/Unity4.6B/Editor/Data/Managed/UnityEngine.dll</HintPath>
+	  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/Managed/UnityEngine.dll</HintPath>
 	</Reference>
 	<Reference Include="UnityEditor">
-	  <HintPath>C:/Program Files (x86)/Unity4.6B/Editor/Data/Managed/UnityEditor.dll</HintPath>
+	  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/Managed/UnityEditor.dll</HintPath>
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\BrainHealthMeter.cs" />
-     <Compile Include="Assets\BulletBehavior.cs" />
      <Compile Include="Assets\Camera\CameraFollower.cs" />
+     <Compile Include="Assets\Camera\GameManager.cs" />
      <Compile Include="Assets\Camera\HUDManager.cs" />
-     <Compile Include="Assets\DopamineSacBehavior.cs" />
-     <Compile Include="Assets\EnergyHealthMeter.cs" />
-     <Compile Include="Assets\NeuronBehavior.cs" />
+     <Compile Include="Assets\Camera\WayPointsHolder.cs" />
+     <Compile Include="Assets\DopamineSac\DopamineSacBehavior.cs" />
+     <Compile Include="Assets\EnergyBullet\BulletBehavior.cs" />
+     <Compile Include="Assets\Neurons\NeuronBehavior.cs" />
      <Compile Include="Assets\Player\Player.cs" />
      <Compile Include="Assets\Player\PlayerMovement.cs" />
-     <Compile Include="Assets\PlayerSpawnPoint.cs" />
-     <Compile Include="Assets\PlayerSpawner.cs" />
-     <Compile Include="Assets\RechargeStationBehavior.cs" />
-     <Compile Include="Assets\Scenes\CharacterSelectionScript.cs" />
-     <Compile Include="Assets\Scenes\ControlsMenuScript.cs" />
-     <Compile Include="Assets\Scenes\GameManager.cs" />
-     <Compile Include="Assets\Scenes\GameOverMenuScript.cs" />
-     <Compile Include="Assets\Scenes\StartMenuScript.cs" />
+     <Compile Include="Assets\Player\PlayerSpawnPoint.cs" />
+     <Compile Include="Assets\Player\PlayerSpawner.cs" />
+     <Compile Include="Assets\RechargeStation\RechargeStationBehavior.cs" />
+     <Compile Include="Assets\Scenes\CharacterSelectionMenu\CharacterSelectionScript.cs" />
+     <Compile Include="Assets\Scenes\ControlsMenu\ControlsMenuScript.cs" />
+     <Compile Include="Assets\Scenes\GameOverMenu\GameOverMenuScript.cs" />
+     <Compile Include="Assets\Scenes\StartMenu\StartMenuScript.cs" />
      <Compile Include="Assets\Synapse\SynapseBehavior.cs" />
-     <Compile Include="Assets\SynapsesHolder.cs" />
+     <Compile Include="Assets\Synapse\SynapsesHolder.cs" />
      <Compile Include="Assets\TimerScript.cs" />
-     <Compile Include="Assets\WayPointsHolder.cs" />
+     <Compile Include="Assets\UI_Bars\BrainHealthMeter.cs" />
+     <Compile Include="Assets\UI_Bars\EnergyHealthMeter.cs" />
      <None Include="Assets\fightBOT (free)\model\Materials\roboShader.shader" />
  <Reference Include="UnityEngine.UI">
- <HintPath>C:/Program Files (x86)/Unity4.6B/Editor/Data/UnityExtensions/Unity/GUISystem/4.6.0/UnityEngine.UI.dll</HintPath>
+ <HintPath>C:/Program Files (x86)/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/4.6.0/UnityEngine.UI.dll</HintPath>
  </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

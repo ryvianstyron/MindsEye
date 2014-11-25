@@ -18,19 +18,25 @@ public class SynapseBehavior : MonoBehaviour
 
 	void Start () 
     {
-        this.SynapseType = Random.Range(0, 1);
-        int RandomHealth = Random.Range(1, 99);
+        int RandomHealth = Random.Range(25, 75);
+        this.SynapseHealth = RandomHealth;
+        if (RandomHealth >= 50)
+        {
+            this.SynapseType = HEALTHY;
+        }
+        else if(RandomHealth < 50)
+        {
+            this.SynapseType = UNHEALTHY;
+        }
         switch (SynapseType)
         {
             case UNHEALTHY:
                 ShouldDamageCurePlayer = true;
                 ShouldDamageDiseasePlayer = false;
-                this.SynapseHealth = RandomHealth;
                 break;
             case HEALTHY:
                 ShouldDamageDiseasePlayer = true;
                 ShouldDamageCurePlayer = false;
-                this.SynapseHealth = 100;
                 break;
         }
         HealthMultipler = (SynapseHealth / 100);
@@ -71,7 +77,7 @@ public class SynapseBehavior : MonoBehaviour
             SynapseHealthBack.transform.localScale = new Vector3(SynapseHealthFront.transform.localScale.x * HealthMultipler,
                                                                  SynapseHealthBack.transform.localScale.y,
                                                                  SynapseHealthBack.transform.localScale.z);
-            if(SynapseHealth == 100)
+            if(SynapseHealth >= 50)
             {
                 SynapseType = HEALTHY;
             }
@@ -87,7 +93,7 @@ public class SynapseBehavior : MonoBehaviour
             SynapseHealthBack.transform.localScale = new Vector3(SynapseHealthFront.transform.localScale.x * HealthMultipler,
                                                                  SynapseHealthBack.transform.localScale.y,
                                                                  SynapseHealthBack.transform.localScale.z);
-            if (SynapseHealth < 100)
+            if (SynapseHealth < 50)
             {
                 SynapseType = UNHEALTHY;
             }
