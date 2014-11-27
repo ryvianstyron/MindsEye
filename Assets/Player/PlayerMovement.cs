@@ -44,7 +44,7 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         BreakingSpeed = 112;
-        MovementSpeed = 225;
+        MovementSpeed = 8;
         JumpSpeed = 55;
         HUD = GameObject.Find("Camera").GetComponent<HUDManager>();
         EnergyHealthMeter = (EnergyHealthMeter)GameObject.Find("PlayerEnergy").GetComponent<EnergyHealthMeter>();
@@ -211,6 +211,14 @@ public class PlayerMovement : MonoBehaviour
         {
             IsFalling = true;
             gameObject.animation.Stop("loop_run_funny");
+            if (LastPlayerDirection == RIGHT)
+            {
+                PlayerRigidBody.AddForce(new Vector3(3.9f, 0, 0) * JumpSpeed);
+            }
+            else if (LastPlayerDirection == LEFT)
+            {
+                PlayerRigidBody.AddForce(new Vector3(-3.9f, 0, 0) * JumpSpeed);
+            }
         }
         else if (Collision.gameObject.name.Contains("RechargeStation") && !IsJumping && !IsGrounded)
         {
@@ -251,7 +259,15 @@ public class PlayerMovement : MonoBehaviour
     protected void Jump()
     {
         gameObject.animation.Play("jump");
-        PlayerRigidBody.AddForce(new Vector3(0, 10, 0) * JumpSpeed);
+        PlayerRigidBody.AddForce(new Vector3(0, 9.5f, 0) * JumpSpeed);
+        if(LastPlayerDirection == RIGHT)
+        {
+            PlayerRigidBody.AddForce(new Vector3(3.9f, 0, 0) * JumpSpeed);
+        }
+        else if(LastPlayerDirection == LEFT)
+        {
+            PlayerRigidBody.AddForce(new Vector3(-3.9f, 0, 0) * JumpSpeed);
+        }
         IsJumping = true;
         IsFalling = true;
         IsGrounded = false;
@@ -264,7 +280,11 @@ public class PlayerMovement : MonoBehaviour
             // make sure the game object is facing left
             gameObject.transform.rotation = Quaternion.Euler(0, 0, 0);
             gameObject.animation.Play("loop_run_funny", PlayMode.StopAll);
-            PlayerRigidBody.AddForce(Vector3.left * MovementSpeed);
+
+            float moveLeft = MovementSpeed * Time.smoothDeltaTime * Input.GetAxis("Horizontal");
+            transform.Translate(Vector3.right * moveLeft);
+
+            //PlayerRigidBody.AddForce(Vector3.left * MovementSpeed);
             LastPlayerDirection = LEFT;
         }
         else if (Direction == RIGHT)
@@ -272,7 +292,11 @@ public class PlayerMovement : MonoBehaviour
             // make sure the game object is facing right
             gameObject.transform.rotation = Quaternion.Euler(0, 180, 0);
             gameObject.animation.Play("loop_run_funny", PlayMode.StopAll);
-            PlayerRigidBody.AddForce(Vector3.right * MovementSpeed);
+
+            float moveRight = MovementSpeed * Time.smoothDeltaTime * Input.GetAxis("Horizontal");
+            transform.Translate(Vector3.left * moveRight);
+
+            //PlayerRigidBody.AddForce(Vector3.right * MovementSpeed);
             LastPlayerDirection = RIGHT;
         }
         ShootRayCast(Direction);
